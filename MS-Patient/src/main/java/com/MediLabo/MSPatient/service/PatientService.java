@@ -15,7 +15,7 @@ public class PatientService {
 	@Autowired
 	private PatientRepository patientRepository;
 
-	public Iterable<Patient> getPatients() {
+	public Iterable<Patient> getAllPatients() {
 		return patientRepository.findAll();
 
 	}
@@ -39,8 +39,8 @@ public class PatientService {
 		
 	}
 
-	public Patient updatePatientInDB(Patient patient) {
-		Patient patientToUpdate = patientRepository.save(patient);
+	public Patient updatePatientInDB(Patient existingPatient) {
+		Patient patientToUpdate = patientRepository.save(existingPatient);
 		return patientToUpdate;
 		
 	}

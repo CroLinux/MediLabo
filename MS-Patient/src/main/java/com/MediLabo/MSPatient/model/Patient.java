@@ -3,6 +3,7 @@ package com.MediLabo.MSPatient.model;
 import java.time.LocalDate;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +38,8 @@ public class Patient {
 	private String lastName;
 
 	@Column(name = "date_of_birth")
-	@NotBlank(message = "Date of birth is mandatory")
+	@NotBlank(message = "Date of birth is mandatory with format YYYY-MM-DD")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private LocalDate dateOfBirth;
 
 	@Column(name = "gender")
