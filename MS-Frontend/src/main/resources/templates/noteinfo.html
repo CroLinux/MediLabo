@@ -77,7 +77,7 @@
 						<a class="nav-link active" aria-current="page" th:href="@{/ms-frontend/patients}">Patients</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" th:href="@{/lapp-logout}" style="color: black;">Log Off</a>
+						<a class="nav-link" th:href="@{/app-logout}" style="color: black;">Log Off</a>
 					</li>
 				</ul>
 			</div>
@@ -89,67 +89,49 @@
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb p-3" style="background-color: #EEEEEE;">
 					<li class="breadcrumb-item active" style="color: black;" id="breadcrumbItem">Home</li>
-					<li class="breadcrumb-item active" style="color: blue;" id="breadcrumbItem">Patients</li>
+					<li class="breadcrumb-item active" style="color: black;" id="breadcrumbItem">Patient</li>
+					<li class="breadcrumb-item active" style="color: blue;" id="breadcrumbItem">Note</li>
 				</ol>
 			</nav>
 		</div>
 	</header>
 
-	<div class="containershoweditpatient">
+	<div class="containershoweditnote">
 		<form class="w-75 mx-auto container px-2" method="post" role="form"
-			th:action="@{/ms-frontend/process_update_patient}" th:object="${patient}">
+			th:action="@{/ms-frontend/process_update_note}" th:object="${note}">
 			<input type="hidden" name="_method" value="PUT">
 			<div th:if="${param.error}" class="alert-danger text-center p-3 my-3" style="color: red;">
-				Profile not updated.
+				Note not updated.
 			</div>
 			<div th:if="${param.success}" class="alert-success text-center p-3 my-3" style="color: green;">
-				Profile successfully updated.
+				Note successfully updated.
 			</div>
 			<div class="row mt-1">
 				<div class="col-4 px-0">
-					<p>Edit your patient</p>
+					<p>Edit your note</p>
 				</div>
 			</div>
 			<div class="row bg-light p-5 d-flex flex-between">
 				<div class="row g-1">
 					<div class="col-12 mb-3">
+						<label for="idNote" class="form-label">Note Id</label>
+						<input type="hidden" th:value="${note.id}" th:field="*{id}">
+						<input type="text" class="form-control" id="id" disabled th:value="${note.id}">
+					</div>
+					<div class="col-6 mb-3">
 						<label for="idPatient" class="form-label">Patient number</label>
-						<input type="hidden" th:value="${patient.idPatient}" th:field="*{idPatient}">
-						<input type="text" class="form-control" id="idPatient" disabled th:value="${patient.idPatient}">
+						<input type="hidden" th:value="${note.patId}" th:field="*{patId}">
+						<input type="text" class="form-control" id="patId" disabled th:value="${note.patId}">
 					</div>
 					<div class="col-md-6 mb-3">
-						<label for="firstName" class="form-label">First Name</label>
-						<input type="text" class="form-control" id="firstName" th:value="${patient.firstName}"
-							th:field="*{firstName}" required>
+						<label for="patient" class="form-label">Last Name</label>
+						<input type="hidden" th:value="${note.patient}" th:field="*{patient}">
+						<input type="text" class="form-control" id="patient" disabled th:value="${note.patient}">
 					</div>
-					<div class="col-md-6 mb-3">
-						<label for="lastName" class="form-label">Last Name</label>
-						<input type="text" class="form-control" id="lastName" th:value="${patient.lastName}"
-							th:field="*{lastName}" required>
-					</div>
-					<div class="col-md-6 mb-3">
-						<label for="birthdate" class="form-label">Birthdate</label>
-						<input type="text" class="form-control" id="birthdate" th:value="${patient.dateOfBirth}"
-							th:field="*{dateOfBirth}" required
-							pattern="^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
-							title="Veuillez entrer la date au format YYYY-MM-DD avec MM de 01 à 12 et DD de 01 à 31">
-					</div>
-					<div class="col-md-6 mb-3">
-						<label for="gender" class="form-label">Gender</label>
-						<select class="form-control" id="gender" th:field="*{gender}">
-							<option value="M" th:selected="${patient.gender == 'M'}">M</option>
-							<option value="F" th:selected="${patient.gender == 'F'}">F</option>
-						</select>
-					</div>
-					<div class="col-md-6 mb-3">
-						<label for="address" class="form-label">Address</label>
-						<input type="text" class="form-control" id="address" th:value="${patient.address}"
-							th:field="*{address}">
-					</div>
-					<div class="col-md-6 mb-3">
-						<label for="phonenumber" class="form-label">Phone number</label>
-						<input type="text" class="form-control" id="phonenumber" th:value="${patient.phoneNumber}"
-							th:field="*{phoneNumber}">
+					<div class="col-md-12 mb-3">
+						<label for="note" class="form-label">Note</label>
+						<textarea class="form-control" id="note" th:value="${note.note}" th:field="*{note}"
+							rows="5"></textarea>
 					</div>
 					<div class="col-12 text-center">
 						<button type="submit" class="btn btn-primary">Save Modifications</button>
@@ -161,23 +143,23 @@
 	</div>
 	<div class="containerpatient">
 		<form class="w-75 mx-auto container px-2" method="get" role="form"
-			th:action="@{/ms-frontend/process_delete_patient/{id}(id=${patient.idPatient})}" th:object="${patient}">
+			th:action="@{/ms-frontend/process_delete_note/{id}(id=${note.id})}" th:object="${note}">
 			<div th:if="${param.error}" class="alert-danger text-center p-3 my-3" style="color: red;">
-				Profile not updated.
+				Note not deleted.
 			</div>
 			<div th:if="${param.success}" class="alert-success text-center p-3 my-3" style="color: green;">
-				Profile successfully updated.
+				Note successfully deleted.
 			</div>
 			<div class="row mt-1">
 				<div class="col-4 px-0">
-					<p>Delete your patient</p>
+					<p>Delete your note</p>
 				</div>
 			</div>
 			<div class="row bg-light p-1 d-flex flex-between">
 				<div class="row g-1 mb-2">
 
 					<div class="col-12 text-center">
-						<button type="submit" class="btn btn-danger">Delete Patient</button>
+						<button type="submit" class="btn btn-danger">Delete Note</button>
 
 					</div>
 

@@ -71,10 +71,10 @@
 				</div>
 				<ul class="nav nav-pills" id="pillNav" role="tablist">
 					<li class="nav-item">
-						<a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
+						<a class="nav-link" th:href="@{/home}" style="color: black;">Home</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" th:href="@{/ms-frontend/patients}" style="color: black;">Patients</a>
+						<a class="nav-link active" aria-current="page" th:href="@{/ms-frontend/patients}">Patients</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" th:href="@{/app-logout}" style="color: black;">Log Off</a>
@@ -88,19 +88,54 @@
 		<div class="containerbreadcrumb">
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb p-3" style="background-color: #EEEEEE;">
-					<li class="breadcrumb-item active" style="color: red;" id="breadcrumbItem">Error Page</li>
+					<li class="breadcrumb-item active" style="color: black;" id="breadcrumbItem">Home</li>
+					<li class="breadcrumb-item active" style="color: black;" id="breadcrumbItem">Patient</li>
+					<li class="breadcrumb-item active" style="color: blue;" id="breadcrumbItem">Note</li>
 				</ol>
 			</nav>
 		</div>
 	</header>
 
-	<div class="containererror">
-		    <h1>Erreur 404 - Page non trouvée</h1>
-    <p>Désolé, la page que vous recherchez n'a pas été trouvée.</p>
-    <p>Veuillez jeter un coup d'oeil dans les logs.</p>
+	<div class="containershoweditprofile">
+		<form class="w-75 mx-auto container px-2" method="post" role="form" th:action="@{/ms-frontend/process_add_note}"
+			th:object="${note}">
+			<input type="hidden" name="_method" value="POST">
+			<div th:if="${param.error}" class="alert-danger text-center p-3 my-3" style="color: red;">
+				Note not added.
+			</div>
+			<div th:if="${param.success}" class="alert-success text-center p-3 my-3" style="color: green;">
+				Note successfully added.
+			</div>
+			<div class="row mt-1">
+				<div class="col-4 px-0">
+					<p>Add new note</p>
+				</div>
+			</div>
+			<div class="row bg-light p-5 d-flex flex-between">
+				<div class="row g-1">
+					<div class="col-md-6 mb-3">
+						<label for="patId" class="form-label">Patient ID</label>
+						<input class="form-control" id="patId" name="patId" type="patId" required readonly th:value="${note.patId}">
+						<p class="text-danger" th:errors="*{patId}" th:if="${#fields.hasErrors('patId')}"></p>
+					</div>
+					<div class="col-md-6 mb-3">
+						<label for="patient" class="form-label">Lastname</label>
+						<input class="form-control" id="patient" name="patient" type="patient" required readonly th:value="${note.patient}">
+						<p class="text-danger" th:errors="*{patient}" th:if="${#fields.hasErrors('patient')}"></p>
+					</div>
+					<div class="col-md-12 mb-3">
+						<label for="note" class="form-label">Note</label>
+						<textarea class="form-control" id="note" name="note" rows="5"></textarea>
+						<p class="text-danger" th:errors="*{note}" th:if="${#fields.hasErrors('note')}"></p>
+					</div>
+					<div class="col-12 text-center">
+						<button type="submit" class="btn btn-success">Add Note</button>
+					</div>
+				</div>
+			</div>
+		</form>
 
 	</div>
-
 
 
 

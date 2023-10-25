@@ -6,14 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WebController {
 
-
 	@GetMapping("/")
 	public String viewSlachPage() {
 		return "login";
 	}
-	
+
 	@GetMapping("/login")
-	public String viewLogin() {
+	public String viewLoginPage() {
 		return "login.html";
 	}
 
@@ -22,5 +21,4 @@ public class WebController {
 		return "home.html";
 	}
 
-	
 }

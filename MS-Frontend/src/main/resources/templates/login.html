@@ -13,6 +13,15 @@
 		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
 		crossorigin="anonymous"></script>
 
+	<script>
+		(function () {
+			window.history.pushState(null, '', window.location.href);
+			window.onpopstate = function () {
+				window.history.pushState(null, '', window.location.href);
+			};
+		})();
+	</script>
+
 </head>
 
 <body>

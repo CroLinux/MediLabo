@@ -50,7 +50,6 @@ public class PatientController {
 	public String processAddNewPatient(PatientBean newPatient) {
 		patientsProxy.processAddNewPatient(newPatient);
 		return "redirect:/ms-frontend/patients";
-
 	}
 
 	@PostMapping("/ms-frontend/process_update_patient")
