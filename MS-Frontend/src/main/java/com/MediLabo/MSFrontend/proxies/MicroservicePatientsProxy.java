@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.MediLabo.MSFrontend.beans.DiabetesRiskBean;
 import com.MediLabo.MSFrontend.beans.NoteBean;
 import com.MediLabo.MSFrontend.beans.PatientBean;
 
@@ -48,4 +49,6 @@ public interface MicroservicePatientsProxy {
 	@DeleteMapping(value = "/ms-note/deletenote/{id}")
 	void processDeleteNote(@PathVariable("id") String id);
 
+	@GetMapping(value = "/ms-risk/risk/{id}")
+	DiabetesRiskBean getPatientRisk(@PathVariable("id") int id);
 }

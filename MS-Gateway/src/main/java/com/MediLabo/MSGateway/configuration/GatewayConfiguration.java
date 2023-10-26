@@ -12,7 +12,9 @@ public class GatewayConfiguration {
     RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
 		return builder.routes()
 				.route("MsPatientApplication", r -> r.path("/ms-patient/**").uri("http://localhost:8081"))
-				.route("MsFrontendApplication", r -> r.path("/ms-frontend/**").uri("http://localhost:8082")).build();
+				.route("MsFrontendApplication", r -> r.path("/ms-frontend/**").uri("http://localhost:8082"))
+				.route("MsNoteApplication", r -> r.path("/ms-note/**").uri("http://localhost:8083"))
+				.route("MsRiskApplication", r -> r.path("/ms-risk/**").uri("http://localhost:8084")).build();
 	}
 
 }

@@ -13,7 +13,7 @@ public class WebController {
 
 	@GetMapping("/login")
 	public String viewLoginPage() {
-		return "login.html";
+		return "login";
 	}
 
 	@GetMapping("/home")

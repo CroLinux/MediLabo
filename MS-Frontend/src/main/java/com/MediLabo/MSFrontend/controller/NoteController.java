@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.MediLabo.MSFrontend.beans.DiabetesRiskBean;
 import com.MediLabo.MSFrontend.beans.NoteBean;
 import com.MediLabo.MSFrontend.beans.PatientBean;
 import com.MediLabo.MSFrontend.proxies.MicroservicePatientsProxy;
@@ -28,17 +29,15 @@ public class NoteController {
 		model.addAttribute("patient", patientInfo);
 		List<NoteBean> patientNotes = patientsProxy.getNotesByPatientId(id);
 		model.addAttribute("notes", patientNotes);
+		DiabetesRiskBean patientRisk = patientsProxy.getPatientRisk(id);
+		model.addAttribute("riskpatient", patientRisk);
 		return "patientnotes.html";
 	}
 	
 	@RequestMapping("/ms-frontend/patient/note/info/{id}")
 	public String getNoteInfo(@PathVariable String id, Model model) {
 		Optional<NoteBean> optionalNote = patientsProxy.getNoteById(id);
-		//NoteBean noteInfo = patientsProxy.getNoteById(id);
 		NoteBean noteInfo = optionalNote.orElse(null);
-		System.out.println(noteInfo);
-		System.out.println(noteInfo);
-		System.out.println(noteInfo);
 		model.addAttribute("note", noteInfo);
 		return "noteinfo.html";
 	}
