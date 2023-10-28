@@ -19,35 +19,41 @@ import com.MediLabo.MSFrontend.beans.PatientBean;
 @FeignClient(name = "MsGatewayApplication", url = "localhost:8080")
 public interface MicroservicePatientsProxy {
 
+	// Microservice Patient //
+
 	@GetMapping(value = "/ms-patient/getAllPatients")
 	List<PatientBean> patientsList();
 
 	@GetMapping(value = "/ms-patient/getPatient/{id}")
 	PatientBean getPatientInfo(@PathVariable("id") int id);
-	
-	@PostMapping("/ms-patient/addPatient")
+
+	@PostMapping(value = "/ms-patient/addPatient")
 	ResponseEntity<String> processAddNewPatient(@RequestBody PatientBean newPatient);
 
-	@PutMapping("/ms-patient/updatePatient")
+	@PutMapping(value = "/ms-patient/updatePatient")
 	ResponseEntity<String> processUpdatePatient(@RequestBody PatientBean updatePatient);
-	
-	@DeleteMapping("/ms-patient/deletePatient/{id}")
+
+	@DeleteMapping(value = "/ms-patient/deletePatient/{id}")
 	void processDeletePatient(@PathVariable("id") int id);
-	
+
+	// Microservice Note //
+
 	@GetMapping(value = "/ms-note/notes/{id}")
 	List<NoteBean> getNotesByPatientId(@PathVariable("id") int id);
-	
+
 	@GetMapping(value = "/ms-note/note/{id}")
 	Optional<NoteBean> getNoteById(@PathVariable("id") String id);
-	
+
 	@PostMapping(value = "/ms-note/addnote")
 	ResponseEntity<String> processAddNewNote(@RequestBody NoteBean newNote);
-	
+
 	@PutMapping(value = "/ms-note/updatenote")
 	ResponseEntity<String> processUpdateNote(@RequestBody NoteBean updateNote);
-	
+
 	@DeleteMapping(value = "/ms-note/deletenote/{id}")
 	void processDeleteNote(@PathVariable("id") String id);
+
+	// Microservice Risk //
 
 	@GetMapping(value = "/ms-risk/risk/{id}")
 	DiabetesRiskBean getPatientRisk(@PathVariable("id") int id);

@@ -23,8 +23,6 @@ public class PatientController {
 		this.patientsProxy = patientsProxy;
 	}
 
-
-
 	@RequestMapping("/ms-frontend/patients")
 	public String patients(Model model) {
 		List<PatientBean> patients = patientsProxy.patientsList();
