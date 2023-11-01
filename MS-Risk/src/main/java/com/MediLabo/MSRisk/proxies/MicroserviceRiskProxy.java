@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.MediLabo.MSRisk.beans.NoteBean;
 import com.MediLabo.MSRisk.beans.PatientBean;
 
-@FeignClient(name = "MsGatewayApplication", url = "localhost:8080")
-//@FeignClient(name = "MsGatewayApplication", url = "medilabo-msgatewayapp:8080")
+//@FeignClient(name = "MsGatewayApplication", url = "localhost:8080")
+@FeignClient(name = "MsGatewayApplication", url = "medilabo-msgatewayapp:8080")
 public interface MicroserviceRiskProxy {
 
 	@GetMapping(value = "/ms-patient/getPatient/{id}")
