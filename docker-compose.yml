@@ -1,0 +1,92 @@
+version: "3.8"
+
+services:
+
+  medilabo-msfrontendapp:
+    build: ./MS-Frontend
+    image: medilabo-msfrontendapp
+    container_name: medilabo-msfrontendapp
+    restart: always
+    ports:
+      - 18082:8082
+    networks:
+      - medilabo_network
+
+  medilabo-msgatewayapp:
+    build: ./MS-Gateway
+    image: medilabo-msgatewayapp
+    container_name: medilabo-msgatewayapp
+    restart: always
+    ports:
+      - 18080:8080
+    networks:
+      - medilabo_network
+
+  medilabo-mspatientapp:
+    build: ./MS-Patient
+    image: medilabo-mspatientapp
+    container_name: medilabo-mspatientapp
+    restart: always
+    ports:
+      - 18081:8081
+    networks:
+      - medilabo_network
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysqldb:3306/medilabo_patient?serverTimezone=UTC    
+    depends_on:
+      - mysqldb
+
+  mysqldb:
+    image: "mysql:8.0.32"
+    restart: always
+    ports:
+      - 13306:3306
+    networks:
+      - medilabo_network  
+    environment:
+      MYSQL_DATABASE: medilabo_patient
+      MYSQL_USER: 
+      MYSQL_PASSWORD: 
+      MYSQL_ROOT_PASSWORD: rootroot
+    volumes: 
+       - mysqldbdata:/var/lib/mysql
+
+  medilabo-noteapp:
+    build: ./MS-Note
+    image: medilabo-msnoteapp
+    container_name: medilabo-msnoteapp
+    ports:
+      - 18083:8083
+    environment:
+        SPRING_DATA_MONGODB_URI: mongodb://medilabo-msnoteapp-db:27018/notes
+    networks:
+      - medilabo_network
+
+  medilabo-msnoteapp-db:
+    image: mongo:6-jammy
+    container_name: medilabo-msnoteapp-db
+    command: mongod --port 27018
+    ports:
+      - 27018:27017 
+    networks:
+      - medilabo_network
+    volumes: 
+       - mongodbdata:/data/db
+       
+  medilabo-msriskapp:
+    build: ./MS-Risk
+    image: medilabo-msriskapp
+    container_name: medilabo-msriskapp
+    ports:
+      - 18084:8084
+    networks:
+      - medilabo_network      
+      
+networks:
+  medilabo_network:
+    driver: bridge
+
+volumes:
+   mysqldbdata:
+   mongodbdata:
+

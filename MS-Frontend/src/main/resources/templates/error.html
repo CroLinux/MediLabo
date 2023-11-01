@@ -83,8 +83,6 @@
 			</div>
 		</div>
 
-
-
 		<div class="containerbreadcrumb">
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb p-3" style="background-color: #EEEEEE;">
@@ -94,15 +92,11 @@
 		</div>
 	</header>
 
-	<div class="containererror">
-		    <h1>Erreur 404 - Page non trouvée</h1>
-    <p>Désolé, la page que vous recherchez n'a pas été trouvée.</p>
-    <p>Veuillez jeter un coup d'oeil dans les logs.</p>
-
+	<div class="containererror center">
+		<h1>Erreur sur votre requête</h1>
+		<p>Désolé, l'action demandée est rejetée pour cette raison:</p>
+		<p th:text="${errorMessage}"></p>
 	</div>
-
-
-
 
 </body>
 

@@ -21,7 +21,7 @@ public class SpringSecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(withDefaults())
-				.authorizeHttpRequests((requests) -> requests.requestMatchers("", "/", "/login").permitAll()
+				.authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/login").permitAll()
 						.requestMatchers("/images/**").permitAll().anyRequest().authenticated())
 				.formLogin((form) -> form.loginPage("/login").loginProcessingUrl("/login").defaultSuccessUrl("/home")
 						.permitAll())

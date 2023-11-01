@@ -23,6 +23,12 @@ public class PatientController {
 		this.patientsProxy = patientsProxy;
 	}
 
+	/**
+	 * Get the list of the actual patients.
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/ms-frontend/patients")
 	public String patients(Model model) {
 		List<PatientBean> patients = patientsProxy.patientsList();
@@ -30,6 +36,13 @@ public class PatientController {
 		return "patients.html";
 	}
 
+	/**
+	 * Get all the information for a specific patient.
+	 * 
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/ms-frontend/patient/info/{id}")
 	public String getpatientInfo(@PathVariable int id, Model model) {
 		PatientBean patientInfo = patientsProxy.getPatientInfo(id);
@@ -37,6 +50,12 @@ public class PatientController {
 		return "patientinfo.html";
 	}
 
+	/**
+	 * Add/Create a new patient.
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping("/ms-frontend/addnewpatient")
 	public String addNewPatient(Model model) {
 		PatientBean newPatient = new PatientBean();
@@ -44,21 +63,38 @@ public class PatientController {
 		return "addpatient.html";
 	}
 
+	/**
+	 * Processing to add a new patient.
+	 * 
+	 * @param newPatient
+	 * @return
+	 */
 	@PostMapping("/ms-frontend/process_add_patient")
 	public String processAddNewPatient(PatientBean newPatient) {
 		patientsProxy.processAddNewPatient(newPatient);
 		return "redirect:/ms-frontend/patients";
 	}
 
+	/**
+	 * Processing to update a patient.
+	 * 
+	 * @param updatedPatient
+	 * @return
+	 */
 	@PostMapping("/ms-frontend/process_update_patient")
 	public String processUpdatePatient(PatientBean updatedPatient) {
 		patientsProxy.processUpdatePatient(updatedPatient);
 		return "redirect:/ms-frontend/patients";
 	}
 
-
+	/**
+	 * Delete a specific patient.
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/ms-frontend/process_delete_patient/{id}")
-	public String processDeletePatient(@PathVariable(value = "id") Integer id ) {
+	public String processDeletePatient(@PathVariable(value = "id") Integer id) {
 		patientsProxy.processDeletePatient(id);
 		return "redirect:/ms-frontend/patients";
 	}

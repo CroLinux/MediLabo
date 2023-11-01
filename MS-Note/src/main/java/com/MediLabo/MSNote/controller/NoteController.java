@@ -20,57 +20,90 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 public class NoteController {
-	
+
 	@Autowired
 	private NoteService noteService;
-	
+
+	/**
+	 * Get all the existing notes.
+	 * 
+	 * @return
+	 */
 	@GetMapping("/ms-note/notes")
-	public Iterable<Note> getAllNotes(){
-		//return noteService.findAllNotes();
+	public Iterable<Note> getAllNotes() {
+		// return noteService.findAllNotes();
 		Iterable<Note> allNotes = noteService.findAllNotes();
 		log.info("Request GET /getAllNotes called and get the result: " + allNotes);
 		return allNotes;
 	}
 
+	/**
+	 * Get all the notes for a specific patient.
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/ms-note/notes/{id}")
-	public List<Note> getNotesByPatId(@PathVariable int id){
+	public List<Note> getNotesByPatId(@PathVariable int id) {
 		List<Note> allNotesByPatId = noteService.getNotesByPatId(id);
-		return allNotesByPatId;		
+		return allNotesByPatId;
 	}
-	
+
+	/**
+	 * Get a specific note.
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/ms-note/note/{id}")
-	public Optional<Note> getNoteById(@PathVariable String id){
+	public Optional<Note> getNoteById(@PathVariable String id) {
 		Optional<Note> noteById = noteService.getNoteById(id);
-		return noteById;		
+		return noteById;
 	}
-	
+
+	/**
+	 * Add/Create a note.
+	 * 
+	 * @param newNote
+	 * @return
+	 */
 	@PostMapping("/ms-note/addnote")
 	public Note addNoteInDB(@RequestBody Note newNote) {
-		
-		return noteService.addNoteInDB(newNote);		
+
+		return noteService.addNoteInDB(newNote);
 	}
-	
+
+	/**
+	 * Update an existing note.
+	 * 
+	 * @param updatedNote
+	 * @return
+	 */
 	@PutMapping("/ms-note/updatenote")
 	public Note updateNoteInDB(@RequestBody Note updatedNote) {
 		Optional<Note> existingNoteOptional = noteService.getNoteById(updatedNote.getId());
-		if(!existingNoteOptional.isPresent()) {
-			log.info("Request : " + updatedNote.toString());			
+		if (!existingNoteOptional.isPresent()) {
+			log.info("Request : " + updatedNote.toString());
 		} else {
 			Note existingNote = existingNoteOptional.get();
 			existingNote.setPatId(updatedNote.getPatId());
 			existingNote.setPatient(updatedNote.getPatient());
 			existingNote.setNote(updatedNote.getNote());
-			
+
 			noteService.updateNoteInDB(existingNote);
-			
-		}	
+
+		}
 		return null;
 	}
-	
+
+	/**
+	 * Delete a sepcific note.
+	 * 
+	 * @param id
+	 */
 	@DeleteMapping("/ms-note/deletenote/{id}")
 	public void deleteNoteFromDB(@PathVariable String id) {
 		noteService.deleteNoteFromDB(id);
 	}
-	
-	
+
 }

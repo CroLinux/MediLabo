@@ -25,42 +25,54 @@ public class PatientController {
 	@Autowired
 	PatientService patientService;
 
+	/**
+	 * Get all the existing patients from the database.
+	 * 
+	 * @return
+	 */
 	@RequestMapping("/ms-patient/getAllPatients")
 	public ResponseEntity<?> getAllPatients(){
 
 		Iterable<Patient> allPatients = patientService.getAllPatients();
-
+		// We verify if object collection is empty.
 		if (!allPatients.iterator().hasNext()) {
 			log.info("Request GET /getPatients called and nothing found.");
-			//return ResponseEntity.badRequest().body("Aucun patient trouvé dans la base de données." + allPatients);
-			//throw new PatientsNotFoundException("Aucun patient trouvé dans la base de données.");
-			//return new ResponseEntity<>(allPatients, HttpStatus.NOT_FOUND);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(allPatients);
 			
 		}
+		// If not empty, we send the values.
 		log.info("Request GET /getPatients called and get the result: " + allPatients);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(allPatients);
 	}
 
-
+	/**
+	 * Get all the informations for a specific patient.
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("/ms-patient/getPatient/{id}")
 	public ResponseEntity<?> getPatientById(@PathVariable int id) {
 		// We verify if the patient already exist
 		if (!patientService.existsById(id)) {
 			// We return an error message if this doesn't exist
 			log.info("Request GET /getPatient called for patient: " + id + " and patient not found");
-			//return ResponseEntity.badRequest().body("Ce patient n'existe pas dans la base de données.");
-			return new ResponseEntity<>(patientService.existsById(id), HttpStatus.NOT_FOUND);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 
 		} else {
 			// Existing Patient? So we display this one
 			log.info("Request GET /getPatient called for patient: " + id + " and patient found");
 			Optional<Patient> patient = patientService.getPatientById(id);
-			// return ResponseEntity.ok("Patient existe !").getBody();
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(patient);
 		}
 	}
 
+	/**
+	 * Add/Create a new patient.
+	 * 
+	 * @param newPatient
+	 * @return
+	 */
 	@PostMapping("/ms-patient/addPatient")
 	public ResponseEntity<?> addPatient(@RequestBody Patient newPatient) {
 		// We verify if the patient already exist
@@ -69,15 +81,21 @@ public class PatientController {
 			// We return an error message if this one already exist
 			log.info("Command POST /addPatients called for : {} and patient already exists in database.",
 					newPatient.toString());
-			return ResponseEntity.badRequest().body("Ce patient existe déjà dans la base de données.");
+			return ResponseEntity.status(HttpStatus.CONFLICT).body("Ce patient existe déjà dans la base de données.");
 		} else {
 			// New Patient? So we add this one
 			patientService.addPatientInDB(newPatient);
 			log.info("Command POST /addPatients called for : {} and patient added in database.", newPatient.toString());
-			return ResponseEntity.ok("Patient ajouté avec succès !");
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body("Patient ajouté avec succès !");
 		}
 	}
 
+	/**
+	 * Update an existing patient.
+	 * 
+	 * @param updatePatient
+	 * @return
+	 */
 	@PutMapping("/ms-patient/updatePatient")
 	public ResponseEntity<?> updatePatientInDB(@RequestBody Patient updatePatient) {
 		Optional<Patient> existingPatientOptional = patientService.getPatientById(updatePatient.getIdPatient());
@@ -86,7 +104,7 @@ public class PatientController {
 			// We return an error message if this doesn't exist
 			log.info("Command PUT /updatePatientInDB called for : {} but the patient doesn't exists in database.",
 					updatePatient.toString());
-			return ResponseEntity.badRequest().body("Ce patient n'existe pas dans la base de données.");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ce patient n'existe pas dans la base de données.");
 		} else {
 			// Existing Patient? So we update this one
 			Patient existingPatient = existingPatientOptional.get();
@@ -99,10 +117,16 @@ public class PatientController {
 
 			patientService.updatePatientInDB(existingPatient);
 			log.info("Command PUT /updatePatientInDB called for : {} and patient updated.", updatePatient.toString());
-			return ResponseEntity.ok("Patient mis à jour avec succès !");
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body("Patient mis à jour avec succès !");
 		}
 	}
 
+	/**
+	 * Delete an existing patient.
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/ms-patient/deletePatient/{id}")
 	// public ResponseEntity<?> deletePatient(@RequestParam int id) {
 	public ResponseEntity<?> deletePatient(@PathVariable int id) {
@@ -111,12 +135,12 @@ public class PatientController {
 			// We return an error message if this doesn't exist
 			log.info(
 					"Request DELETE /deletePatient called for the Patient: " + id + " but doesn't exists in database.");
-			return ResponseEntity.badRequest().body("Ce patient n'existe pas dans la base de données.");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ce patient n'existe pas dans la base de données.");
 		} else {
 			// Existing Patient? So we delete this one
 			patientService.deletePatientById(id);
 			log.info("Request DELETE /deletePatient called for the Patient: " + id + " and deleted.");
-			return ResponseEntity.ok("Patient effacé avec succès !");
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body("Patient effacé avec succès !");
 		}
 	}
 

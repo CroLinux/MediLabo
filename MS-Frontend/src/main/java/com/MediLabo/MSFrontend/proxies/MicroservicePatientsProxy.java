@@ -16,7 +16,8 @@ import com.MediLabo.MSFrontend.beans.DiabetesRiskBean;
 import com.MediLabo.MSFrontend.beans.NoteBean;
 import com.MediLabo.MSFrontend.beans.PatientBean;
 
-@FeignClient(name = "MsGatewayApplication", url = "localhost:8080")
+@FeignClient(name = "MsGatewayApplication", url = "localhost:8080", dismiss404 = true)
+//@FeignClient(name = "MsGatewayApplication", url = "medilabo-msgatewayapp:8080")
 public interface MicroservicePatientsProxy {
 
 	// Microservice Patient //
